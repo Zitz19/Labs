@@ -50,15 +50,13 @@ int main() {
 			int i = 0;
 			char *first = NULL;
 			char *second = NULL;
-//			first = (char *) calloc(2 * stack->size, sizeof(char));
-//			second = (char *) calloc(2 * stack->size, sizeof(char));
 			oper = (char *) calloc(2, sizeof(char));
 			printf("STACK SIZE IS %d\n", stack->size);
 			do {
 				elem = (char *) calloc(2 * stack->size, sizeof(char));
-				if ((str[i] >= 42) && (str[i] <= 47)) {
+                if ((str[i] >= 42) && (str[i] <= 47)) {
 					second = pop(stack);
-					first = pop(stack);
+    				first = pop(stack);
 					oper[0] = str[i];
 					oper[1] = '\0';
 					printf("FIRST: %s\n", first);
@@ -68,7 +66,8 @@ int main() {
 					strcat(elem, oper);
 					strcat(elem, second);
 					strcat(elem, ")");
-					push(stack, elem);
+					puts(elem);
+                    push(stack, elem);
 					free(first);
 					free(second);
 				}

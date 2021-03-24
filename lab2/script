@@ -1,0 +1,10 @@
+# !/bin/bash
+cd mylib
+cc -O0 -g -c stack.c list.c vector.c -D vector -std=c99
+ar -r libvector.a stack.o vector.o list.o
+cc -O0 -g -c stack.c vector.c list.c -D list -std=c99
+ar -r liblist.a stack.o vector.o list.o
+rm stack.o vector.o list.o
+cd ..
+cc -O0 -g -o lab2_vect lab2.c -I mylib/ -L mylib/ -lvector -D vector -std=c99
+cc -O0 -g -o lab2_list lab2.c -I mylib/ -L mylib/ -llist -D list -std=c99

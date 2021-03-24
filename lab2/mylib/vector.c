@@ -19,7 +19,8 @@ void freeVector(char **vect, int size) {
 }
 
 void addString(char **vect, int size, int x, char *str) {
-	memcpy(vect[x], str, 2 * size * sizeof(char));
+    printf("STR_SIZE IS %d\n", strlen(str));
+    memcpy(vect[x], str, strlen(str) * sizeof(char));
 }
 
 void freeString(char **vect, int x) {
