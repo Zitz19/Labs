@@ -11,59 +11,57 @@
 #include "list.h"
 #endif
 
-Stack *makeStack(int m) {
-	Stack *stack = NULL;
-	stack = (Stack *) calloc(1, sizeof(Stack));
-	stack->size = m;
-	#ifdef vector
-	stack->data = makeVector(stack->size);
-	stack->top = 0;
-	#endif
-
-	#ifdef list
-	stack->top = makeList(stack->size);
-	#endif
-	return stack;
+Stack *makeStack(int stack_size) {
+    Stack *stack = (Stack *) calloc(1, sizeof(Stack));
+    stack->size = stack_size;
+#ifdef vector
+    stack->data = makeVector(stack->data, stack->size);
+    stack->top = 0;
+    return stack;
+#endif
+    
+#ifdef list
+    stack->top = NULL;
+#endif
 }
 
 void freeStack(Stack *stack) {
-	#ifdef vector
-	if (stack->data) {
-		freeVector(stack->data, stack->size);
-	}
-	#endif
-	
-	#ifdef list
-	if (stack->top) {
-		freeList(stack->top);
-	}
-	#endif
-	free(stack);
+#ifdef vector
+    stack->data = freeVector(stack->data, stack->size);
+#endif
+
+#ifdef list
+    do {
+        if (stack->top) {
+            stack->top = freeList(stack->top);
+        }
+        else {
+            puts("ERROR. STACK IS EMPTY");
+        }
+    } while (stack->top);
+#endif
 }
 
 void push(Stack *stack, char *str) {
-	#ifdef vector
-	addString(stack->data, stack->size, stack->top, str);
-	stack->top++;
-	#endif
+#ifdef vector
+    stack->data = addString(stack->data, stack->top, str, stack->size);
+    stack->top++;
+#endif
 
-	#ifdef list
-	addItem(stack->top, stack->size, str);
-	#endif
+#ifdef list
+    stack->top = addItem(stack->top, stack->size, str);
+#endif
 }
 
 char *pop(Stack *stack) {
-	char *str = NULL;
-	str = (char *) calloc(2 * stack->size, sizeof(char));
-	#ifdef vector
-	stack->top--;
-	memcpy(str, stack->data[stack->top], 2 * stack->size * sizeof(char));
-	freeString(stack->data, stack->top);
-	#endif
+    char *str = (char *) calloc(2 * stack->size, sizeof (char));
+#ifdef vector
+    stack->top--;
+    str = getString(str, stack->data, stack->top, stack->size);
+#endif
 
-	#ifdef list
-	memcpy(str, stack->top->data, 2 * stack->size * sizeof(char));
-	freeItem(stack->top);
-	#endif
-	return str;
+#ifdef list
+    str = getItem(str, &stack->top, stack->size);
+#endif
+    return str;
 }

@@ -1,24 +1,21 @@
-#ifndef STACK_H
-#define STACK_H
-#ifdef list
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "list.h"
-#endif
 
 typedef struct Stack {
-	int size;
+    int size;
 #ifdef vector
-	char **data;
-	int top;
+    char **data;
+    int top;
 #endif
 
 #ifdef list
-	Item *top;
+    Item *top;
 #endif
 } Stack;
 
-Stack *makeStack(int m);
+Stack *makeStack(int stack_size);
 void freeStack(Stack *stack);
 void push(Stack *stack, char *str);
 char *pop(Stack *stack);
-
-#endif

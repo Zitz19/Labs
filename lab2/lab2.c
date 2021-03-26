@@ -36,53 +36,48 @@ char *get_str() {
 }
 
 int main() {
-	char *str = NULL;
-	int len = 0;
-	Stack *stack = NULL;
-	do {
-		printf("Postfix formula: ");
-		str = get_str();
-		if (str) {
-			len = strlen(str);
-			stack = makeStack(len);
-			char *elem = NULL;
-			char *oper = NULL;
-			int i = 0;
-			char *first = NULL;
-			char *second = NULL;
-			oper = (char *) calloc(2, sizeof(char));
-			printf("STACK SIZE IS %d\n", stack->size);
-			do {
-				elem = (char *) calloc(2 * stack->size, sizeof(char));
-                if ((str[i] >= 42) && (str[i] <= 47)) {
-					second = pop(stack);
-    				first = pop(stack);
-					oper[0] = str[i];
-					oper[1] = '\0';
-					printf("FIRST: %s\n", first);
-					printf("SECOND: %s\n", second);
-					strcat(elem, "(");
-					strcat(elem, first);
-					strcat(elem, oper);
-					strcat(elem, second);
-					strcat(elem, ")");
-					puts(elem);
-                    push(stack, elem);
-					free(first);
-					free(second);
-				}
-				else {
-					memcpy(elem, str + i, sizeof(char));
-					push(stack, elem);
-				}
-				i++;
-				free(elem);
-			} while(i < len);
-			printf("Infix formula: %s\n", pop(stack));
-			freeStack(stack);
-			free(str);
-		}
-		printf("\n");
-	} while (str);
-	return 0;
+    char *str = NULL;
+    char *buf = NULL;
+    char *first = NULL;
+    char *second = NULL;
+    do {
+        printf("Postfix formula: ");
+        str = get_str();
+        if (str) {
+            int len = strlen(str);
+            Stack *stack = makeStack(len);
+            buf = (char *) calloc(2 * len, sizeof(char));
+            char *result = (char *) calloc(2 * len, sizeof(char));
+            for (int i = 0; i < len; i++) {
+                memset(buf, 0, sizeof(buf));
+                memcpy(buf, str + i, sizeof(char));
+                if ((buf[0] >= 42) && (buf[0] <= 47)) {
+                    memset(result, 0, 2 * len * sizeof(char));
+                    second = pop(stack);
+                    first = pop(stack);
+                    strcat(result, "(");
+                    strcat(result, first);
+                    strcat(result, buf);
+                    strcat(result, second);
+                    strcat(result, ")");
+                    push(stack, result);
+                    free(first);
+                    free(second);
+                }
+                else {
+                    push(stack, buf);
+                }
+            }
+            printf("Infix formula: %s\n", result);
+            free(result);
+            free(buf);
+            freeStack(stack);
+            free(stack);
+            free(str);
+        }
+        else {
+            puts("END OF PROGRAM");
+        }
+    } while(str);
+    return 0;
 }
