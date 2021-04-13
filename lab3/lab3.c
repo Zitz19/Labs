@@ -2,88 +2,82 @@
 #include <stdlib.h>
 #include <string.h>
 #include "table.h"
+#include "dialog.h"
 
-const char *MSGS[] = {"0. Quit", "1. Make the table", "2. Free the table", "3. Add the element",
-                      "4. Search with parent"};
+const char *MSGS[] = {"0. Quit", "1. Add the element", "2. Print the table", "3. Search with parent",
+                      "4. Delete element with key1", "5. Delete element with key2 and release",
+                      "6. Search with key2 or key2 and release"};
+
 const int MSGS_SIZE = sizeof(MSGS) / sizeof(MSGS[0]);
-
-int dialog(const char *msgs[], int n) {
-    char *error = "";
-    int choice;
-    do {
-        puts(error);
-        error = "You're wrong. Try again!";
-        for (int i = 0; i < n; ++i) {
-            puts(msgs[i]);
-        }
-        printf("Make your choice: ");
-        choice = getchar() - '0';
-        while (getchar() != '\n') {}
-    } while (choice < 0 || choice >= n);
-    return choice;
-}
-
-char *get_str() {
-    char buf[81] = {0};
-    char *res = NULL;
-    int len = 0;
-    int n = 0;
-    do {
-        n = scanf("%80[^\n]", buf);
-        if (n < 0) {
-            if (!res) {
-                return NULL;
-            }
-        } else if (n > 0) {
-            int chunk_len = strlen(buf);
-            int str_len = len + chunk_len;
-            res = realloc(res, str_len + 1);
-            memcpy(res + len, buf, chunk_len);
-            len = str_len;
-        } else {
-            scanf("%*c");
-        }
-    } while (n > 0);
-
-    if (len > 0) {
-        res[len] = '\0';
-    } else {
-        res = calloc(1, sizeof(char));
-    }
-
-    return res;
-}
 
 int main() {
     int c = 0;
-    Table *table = NULL;
+    Table *table = makeTable();
     do {
         c = dialog(MSGS, MSGS_SIZE);
         switch(c) {
             case 0:
                 break;
             case 1:
-                table = makeTable();
-                break;
-            case 2:
-                freeTable(table);
-                break;
-            case 3:
                 puts("Please, enter the parent, first and second key:");
-                int parent, key1, key2;
-                scanf("%d%d%d", &parent, &key1, &key2);
+                char str_parent[4];
+                char str_key1[4];
+                int key2;
+                scanf("%s %s %d", str_parent, str_key1, &key2);
+                /* scanf("%s", str_parent);
+                scanf("%s", str_key1);
+                scanf("%d", &key2); */
                 while (scanf("%*c"));
+                int parent = str_to_int(str_parent);
+                int key1 = str_to_int(str_key1);
                 puts("Please, enter a string:");
                 char *str = get_str();
-                addItem(table, parent, key1, key2, str);
+                if (addItem(table, parent, key1, key2, str) == 0) {
+                    puts("ERROR");
+                }
+                break;
+            case 2:
+                printTable(table);
+                break;
+            case 3:
+                puts("Please, enter parent key:");
+                int par;
+                char *buf;
+                int array_len = 0;
+                buf = get_str();
+                par = str_to_int(buf);
+                free(buf);
+                keySpace1 **array = parSearch(table, par, &array_len);
+                printArray1(array, array_len);
+                free(array);
                 break;
             case 4:
-                puts("Please, enter a parent key:");
-                int x = 0;
-                scanf("%d", &x);
+                puts("Please, enter key1:");
+                buf = get_str();
+                key1 = str_to_int(buf);
+                free(buf);
+                if (del_KS1(table, key1) == 0) {
+                    puts("ERROR");
+                }
+                break;
+            case 5:
+                puts("Please, enter key2 and release:");
+                int release;
+                scanf("%d %d", &key2, &release);
                 while (scanf("%*c"));
-                ks1_parSearch(table, x);
+                del_KS2(table, key2, release);
+                break;
+            case 6:
+                puts("Please, enter key2 and 0 or key2 and release");
+                Unit **array2 = NULL;
+                scanf("%d %d", &key2, &release);
+                while (scanf("%*c"));
+                array2 = key2_Search(table, key2, release, &array_len);
+                printArray2(array2, array_len);
+                free(array2);
+                break;
         }
     } while (c != 0);
+    freeTable(table);
     return 0;
 }
