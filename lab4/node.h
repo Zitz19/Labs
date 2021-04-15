@@ -9,5 +9,8 @@ void Insert(Tree *tree, char *key, char *str);
 void Delete(Tree *tree, char *key);
 void Search(Tree *tree, char *key);
 void Successor(Tree *tree, char *key);
+void InorderWalk(Tree *tree, char *key);
+void Print(Node *ptr, long n);
+void FreeTree(Tree *tree);
 
 #endif

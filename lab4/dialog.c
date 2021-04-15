@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "node.h"
 
 int dialog(const char *msgs[], int n) {
@@ -58,3 +59,37 @@ void printData(char **array, int len) {
         }
     }
 }
+/*
+int readTree(Tree *tree, FILE *fd) {
+    char *key = calloc(10, sizeof(char));
+    char *str = calloc(100, sizeof(char));
+    int i;
+    do {
+        if (feof(fd))
+            return -1;
+        i = 0;
+        do {
+            fread(key + i, sizeof(char), 1, fd);
+            i++;
+        } while((!feof(fd)) && (key[i - 1] != ' '));
+        key[i - 1] = '\0';
+        i = 0;
+        do {
+            fread(str + i, sizeof(char), 1, fd);
+            i++;
+        } while((!feof(fd)) && (str[i - 1] != '\n'));
+        str[i - 1] = '\0';
+        Insert(tree, key, str);
+    } while(!feof(fd));
+    return 1;
+} */
+/*
+void readTree(Tree *tree, FILE *fd, char **key, char **str, int len, int *pos) {
+    int i;
+    i = 0;
+    while(*pos < len) {
+        fread(*key + i, sizeof(char), 1, fd);
+        (*pos)++;
+        i++;
+    }
+}*/

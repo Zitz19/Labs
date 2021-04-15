@@ -59,3 +59,26 @@ void Successor(Tree *tree, char *key) {
     printf("%s: ", suc->key);
     printData(suc->data, suc->len);
 }
+
+void Print(Node *ptr, long n) {
+    long i;
+    if (ptr) {
+        Print(ptr->right, n+2);
+        for (i = 0; i < n; i++)
+            printf(" ");
+        printf("%s\n", ptr->key);
+        Print(ptr->left, n+2);
+    }
+}
+
+void InorderWalk(Tree *tree, char *key) {
+    Node *ptr = treeSearch(tree->root, key);
+    Print(ptr, 0);
+    //treeInorderWalk(ptr);
+}
+
+void FreeTree(Tree *tree) {
+    while (tree->root) {
+        Delete(tree, tree->root->key);
+    }
+}
