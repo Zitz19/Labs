@@ -38,13 +38,19 @@ void Insert(Tree *tree, char *key, char *str) {
 }
 
 void Delete(Tree *tree, char *key) {
+    char **temp;
     Node *ptr = treeSearch(tree->root, key);
-    if (ptr->len == 1) {
+    if (ptr && ptr->len == 1) {
         treeDelete(tree, ptr);
         ptr = freeNode(ptr);
-    } else {
+    } else if (ptr) {
         free(ptr->data[0]);
         ptr->len--;
+        temp = ptr->data;
+        ptr->data = calloc(ptr->len, sizeof(char *));
+        for (int i = 0; i < ptr->len; i++)
+            ptr->data[i] = temp[i + 1];
+        free(temp);
     }
 }
 

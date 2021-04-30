@@ -23,7 +23,10 @@ typedef struct Tree {
 Node *BtreeSearch(Node *ptr, int key, int *index);
 Tree *BtreeCreate(Tree *tree);
 void BtreeSplitChild(Node *par, int i);
-void BtreeInsert(Tree *tree, Node *ptr, int key);
-void BtreeInsertNonfull(Node *ptr, int key);
+void BtreeInsert(Tree *tree, Node *ptr, int key, Data *data);
+void BtreeInsertNonfull_extra(Node *ptr, int key);
+void BtreeInsertNonfull(Node *ptr, int key, Data *data);
+Node *BtreeSearchMax(Node *ptr);
+Node *BtreeSearchMin(Node *ptr);
 
 #endif
