@@ -8,7 +8,7 @@
 
 const char *MSGS[] = {"0. Quit", "1. Add a node", "2. Add an edge", "3. Remove a node", "4. Remove an edge",
                       "5. Test print", "6. DFS", "7. Draw a graph", "8. Write to file", "9. Read from file",
-                      "10. Graph generation"};
+                      "10. Graph generation", "11. Dijksra", "12. Ford-Fulkerson", "13. Timing", "14. Map"};
 
 const int MSGS_SIZE = sizeof(MSGS) / sizeof(MSGS[0]);
 
@@ -20,6 +20,8 @@ int main() {
     Item *tmp;
     FILE *fd = NULL;
     int m;
+    int cap, s, t;
+    clock_t first, last;
     Node *Adj = newGraph(size);
     do {
         c = dialog(MSGS, MSGS_SIZE);
@@ -46,10 +48,10 @@ int main() {
                     scanf("%*c");
                     break;
                 }
-                puts("Enter an adjacent nodes ID");
+                puts("Enter an adjacent nodes ID and capacity");
                 for (int i = 0; i < n; i++) {
-                    scanf("%d", &k);
-                    Adj[id].head = newItem(Adj[id].head, k);
+                    scanf("%d%d", &k, &cap);
+                    Adj[id].head = newItem_modified(Adj[id].head, k, cap);
                 }
                 scanf("%*c");
                 break;
@@ -75,7 +77,7 @@ int main() {
                         printf("NODE #%d {%d; %d}: ", Adj[i].id, Adj[i].x, Adj[i].y);
                         tmp = Adj[i].head;
                         while (tmp) {
-                            printf("%d ", tmp->id);
+                            printf("%d(%d/%d) ", tmp->id, tmp->f, tmp->c);
                             tmp = tmp->next;
                         }
                         printf("\n");
@@ -86,7 +88,10 @@ int main() {
                 puts("Enter a source node ID and a key");
                 scanf("%d%d", &id, &k);
                 scanf("%*c");
-                DFS(Adj, size, id, k);
+                if (DFS(Adj, size, id, k))
+                    printDFS_Path(Adj, id, k);
+                else
+                    puts("Way wasn't found");
                 break;
             case 7:
                 fd = fopen("scheme.gv", "w");
@@ -165,6 +170,57 @@ int main() {
                     for (int j = 0; j < rand() % m; j++)
                         Adj[i].head = newItem(Adj[i].head, rand() % m + 1);
                 }
+                break;
+            case 11:
+                puts("Enter a source ID and a key");
+                scanf("%d%d%*c", &id, &k);
+                Dijkstra(Adj, size, id, k);
+                break;
+            case 12:
+                puts("Enter a source and a sink");
+                scanf("%d %d", &s, &t);
+                scanf("%*c");
+                Ford_Fulkerson(Adj, size, s, t);
+                break;
+            case 13:
+                for (int j = 1; j <= 10; j++) {
+                    size = 50;
+                    Node *Adj = newGraph(size);
+                    m = j * 1000;
+                    for (int i = 1; i <= m; i++) {
+                        id = i;
+                        Adj = updateGraph(Adj, id, &size);
+                        Adj = newNode(Adj, id, rand() % 100, rand() % 100);
+                    }
+                    for (int i = 1; i <= m; i++) {
+                        for (int j = 0; j < rand() % m; j++)
+                            Adj[i].head = newItem(Adj[i].head, rand() % m + 1);
+                    }
+                    srand(time(NULL));
+                    id = rand() % m + 1;
+                    first = clock();
+                    DFS_modified(Adj, size, id);
+                    last = clock();
+                    printf("Test #%d: number of nodes = %d, time = %ld\n", m / 1000, m, (last - first));
+                    for (int i = 1; i < size; i++) {
+                        if (Adj[i].id)
+                            freeList(Adj[i].head);
+                    }
+                    free(Adj);
+                }
+                break;
+            case 14:
+                fd = fopen("roads.txt", "r");
+                for (int i = 1; i < 21964; i++) {
+                    Adj = updateGraph(Adj, i, &size);
+                    Adj = newNode(Adj, i, 0, 0);
+                }
+                for (int i = 0; i < 21963; i++) {
+                    fscanf(fd, "%*d %d %d %*lf %*c", &s, &t);
+                    Adj[s + 1].head = newItem(Adj[s + 1].head, t + 1);
+                    Adj[t + 1].head = newItem(Adj[t + 1].head, s + 1);
+                }
+                fclose(fd);
                 break;
         }
     } while (c);

@@ -44,3 +44,21 @@ Item *removeItem(Item *head, int id) {
     free(tmp);
     return head;
 }
+
+Item *newItem_modified(Item *head, int id, int c) {
+    Item *ptr = head;
+    Item *prev = NULL;
+    while (ptr) {
+        prev = ptr;
+        ptr = ptr->next;
+    }
+    ptr = calloc(1, sizeof(Item));
+    if (prev)
+        prev->next = ptr;
+    ptr->id = id;
+    ptr->c = c;
+    ptr->next = NULL;
+    if (!head)
+        head = ptr;
+    return head;
+}

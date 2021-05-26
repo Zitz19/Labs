@@ -18,7 +18,17 @@ Node *newGraph(int size);
 Node *updateGraph(Node *Adj, int id, int *size);
 Node *newNode(Node *Adj, int id, int x, int y);
 void printDFS_Path(Node *Adj, int id, int tmp);
-void DFS(Node *Adj, int size, int id, int key);
+int DFS(Node *Adj, int size, int id, int key);
 int DFS_Visit(Node *Adj, int id, int key, int *time);
+int DFS_modified(Node *Adj, int size, int id);
+int DFS_Visit_modified(Node *Adj, int id, int *time);
+void initSingleSource(Node *Adj, int s, int size);
+void Relax(Node *Adj, int x, int y);
+int ExtractMin(Node *Adj, int size);
+void Dijkstra(Node *Adj, int size, int s, int key);
+Item *findEdge(Node *Adj, int size, int u, int v);
+int minCapacity(Node *Adj, int size, int x);
+Node *residualNetModify(Node *Adj, Node *ResNet, int size);
+Node *Ford_Fulkerson(Node *Adj, int size, int s, int t);
 
 #endif
