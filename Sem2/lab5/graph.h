@@ -30,5 +30,6 @@ Item *findEdge(Node *Adj, int size, int u, int v);
 int minCapacity(Node *Adj, int size, int x);
 Node *residualNetModify(Node *Adj, Node *ResNet, int size);
 Node *Ford_Fulkerson(Node *Adj, int size, int s, int t);
+int ** Floyd(Node *Adj, int size);
 
 #endif

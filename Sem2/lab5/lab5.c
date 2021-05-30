@@ -8,7 +8,7 @@
 
 const char *MSGS[] = {"0. Quit", "1. Add a node", "2. Add an edge", "3. Remove a node", "4. Remove an edge",
                       "5. Test print", "6. DFS", "7. Draw a graph", "8. Write to file", "9. Read from file",
-                      "10. Graph generation", "11. Dijksra", "12. Ford-Fulkerson", "13. Timing", "14. Map"};
+                      "10. Graph generation", "11. Dijksra", "12. Ford-Fulkerson", "13. Timing", "14. Map", "Floyd"};
 
 const int MSGS_SIZE = sizeof(MSGS) / sizeof(MSGS[0]);
 
@@ -22,6 +22,7 @@ int main() {
     int m;
     int cap, s, t;
     clock_t first, last;
+    int **Matrix;
     Node *Adj = newGraph(size);
     do {
         c = dialog(MSGS, MSGS_SIZE);
@@ -221,6 +222,18 @@ int main() {
                     Adj[t + 1].head = newItem(Adj[t + 1].head, s + 1);
                 }
                 fclose(fd);
+                break;
+            case 15:
+                Matrix = Floyd(Adj, size);
+                for (int i = 0; i < size; i++) {
+                    if (Adj[i].id)
+                        n++;
+                }
+                for (int i = 1; i < n; i++) {
+                    for (int j = 1; j < n; j++)
+                        printf("%d ", Matrix[i][j]);
+                    printf("\n");
+                }
                 break;
         }
     } while (c);

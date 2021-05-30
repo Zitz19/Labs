@@ -25,7 +25,7 @@ Tree *BtreeCreate(Tree *tree);
 void BtreeSplitChild(Node *par, int i);
 void BtreeInsert(Tree *tree, Node *ptr, int key, Data *data);
 void BtreeInsertNonfull_extra(Node *ptr, int key);
-void BtreeInsertNonfull(Node *ptr, int key, Data *data);
+void BtreeInsertNonfull(Node *ptr, int key, Data *datag);
 Node *BtreeSearchMax(Node *ptr);
 Node *BtreeSearchMin(Node *ptr);
 

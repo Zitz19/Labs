@@ -230,3 +230,44 @@ Node *Ford_Fulkerson(Node *Adj, int size, int s, int t) {
     free(ResNet);
     return Adj;
 }
+
+int **makeMatrix(Node *Adj, int size) {
+    int n = 0;
+    for (int i = 0; i < size; i++) {
+        if (Adj[i].id)
+            n++;
+    }
+    int **Matrix = calloc(n, sizeof(int *));
+    for (int i = 0; i < n; i++) {
+        Matrix[i] = calloc(n, sizeof(int));
+        for (int j = 0; j < n; j++)
+            Matrix[i][j] = 32000;
+    }
+    for (int i = 1; i < size; i++) {
+        if (Adj[i].id) {
+            for (Item *tmp = Adj[i].head; tmp != NULL; tmp = tmp->next)
+                Matrix[Adj[i].id][tmp->id] = tmp->f;
+        }
+    }
+    return Matrix;
+}
+
+int ** Floyd(Node *Adj, int size) {
+    int **Matrix = makeMatrix(Adj, size);
+    int n = 0;
+    for (int i = 0; i < size; i++) {
+        if (Adj[i].id)
+            n++;
+    }
+    for (int k = 1; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < n; j++) {
+                if (Matrix[i][k] + Matrix[k][j] < Matrix[i][j]) {
+                    Matrix[i][j] = Matrix[i][k] + Matrix[k][j];
+                    Adj[j].p = k;
+                }
+            }
+        }
+    }
+    return Matrix;
+}

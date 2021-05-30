@@ -23,7 +23,7 @@ int main() {
                 break;
             case 2:
                 scanf("%d%*c", &key);
-                Remove(tree, key);
+                tree = Remove(tree, key);
                 break;
             case 3:
                 scanf("%d%*c", &key);
