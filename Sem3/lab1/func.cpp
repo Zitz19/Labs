@@ -1,6 +1,6 @@
 #include <iostream>
 #include <exception>
-#include "func.h"
+#include "include/func.h"
 
 Matrix *newMatrix(int m,  int n) {
     Matrix *M = new Matrix;

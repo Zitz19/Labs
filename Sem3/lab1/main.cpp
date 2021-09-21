@@ -1,5 +1,5 @@
 #include <iostream>
-#include "func.h"
+#include "include/func.h"
 using std::cout;
 using std::cin;
 using std::endl;
