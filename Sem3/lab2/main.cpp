@@ -30,7 +30,7 @@ int main() {
                 std::cout << "f(" << x << ") = " << L.f(x) << std::endl;
                 break;
             case 2:
-                std::cout << "\nEnter alpha: ";
+                std::cout << "\nEnter alpha (-90 <= alpha <= 90): ";
                 double alpha;
                 std::cin >> alpha;
                 std::cout << "r(" << alpha << ") = " << L.r(alpha) << std::endl;

@@ -8,7 +8,7 @@ class Line {
   private:
     double a;
   public:
-    explicit Line(double a = 1);
+    explicit Line(double a = 1); // defence from implicit conversion
     double f(const double x);
     double r(const double alpha);
     double R_zp();
