@@ -2,7 +2,10 @@
 #include <cstdlib>
 #include <algorithm>
 
-#include "deck.h"
+#include "include/deck.h"
+
+const std::vector<std::string> Deck::Suits = {"H", "D", "C", "S"};
+const std::vector<std::string> Deck::Ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
 int Deck::nameToInt(const std::vector<std::string>& nameVector, const std::string& name) {
     for (int i = 0; i < nameVector.size(); i++)
@@ -91,6 +94,7 @@ void Deck::Output() {
 }
 
 void Deck::addRandCard() {
+    std::srand(time(nullptr));
     int suit = std::rand() % Deck::Suits.size();
     int rank = std::rand() % Deck::Ranks.size();
     if (find(suit, rank)) {
