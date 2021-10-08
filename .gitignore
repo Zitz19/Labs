@@ -1,5 +1,7 @@
 build/
+bin/
 *.o
 *.a
-.idea
-
+.idea/
+lib/
+script_*
