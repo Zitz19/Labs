@@ -13,12 +13,35 @@ namespace mns {
 int main() {
     int c = 0;
     do {
+        Deck deck;
         for (int i = 0; mns::menu.size(); i++)
             std::cout << "\n" << mns::menu[i];
         std::cout << std::endl << "Choose an option: ";
         std::cin >> c;
+        int num;
+        std::string suit, rank;
         switch (c) {
             case 0:
+                break;
+            case 1:
+                std::cout << "Some rules\n";
+                break;
+            case 2:
+                deck = Deck();
+                break;
+            case 3:
+                std::cin >> num;
+                deck = Deck(num);
+                break;
+            case 4:
+                std::cin >> suit >> rank;
+                deck = Deck(suit, rank);
+                break;
+            case 5:
+                deck.Input();
+                break;
+            case 6:
+                deck.Output();
                 break;
         }
     } while(c);
