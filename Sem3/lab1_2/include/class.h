@@ -15,4 +15,5 @@ class Line {
     double S1();
     double V1();
     double S2();
+    void Setter(const double new_a);
 };

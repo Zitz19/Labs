@@ -1,17 +1,22 @@
 #include <iostream>
 #include <vector>
+#include <limits>
 #include "include/class.h"
 
 namespace mns {
     std::vector<std::string> menu = {"0. Quit", "1. y = f(x)", "2. r = f(alpha)", "3. Radius of curvature",
                                      "4. Square AOM1", "5. Volume of AOM1 around OX",
-                                     "6. Square between line and asymptote"};
+                                     "6. Square between line and asymptote", "7. Enter new 'a'"};
 } // A bit C-style menu, it is only 2 lab now, so no matters
 
 int main() {
     std::cout << "Enter a: ";
     double a;
-    std::cin >> a;
+    while (!(std::cin >> a)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cerr << "Please, enter a number.\n";
+    }
     Line L = Line(a);
     int c;
     do {
@@ -46,6 +51,16 @@ int main() {
                 break;
             case 6:
                 std::cout << "S2 = " << L.S2() << std::endl;
+                break;
+            case 7:
+                std::cout << "Enter a new 'a': ";
+                double new_a;
+                while (!(std::cin >> new_a)) {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cerr << "Please, enter a number.\n";
+                }
+                L.Setter(new_a);
                 break;
         }
     } while (c);

@@ -23,11 +23,16 @@ public:
     Deck() = default;
     Deck(int num);
     Deck(std::string& suit, std::string& rank);
-    inline std::string getSuit(int pos) { return Deck::Suits[cards[pos].suit]; }
-    inline std::string getRank(int pos) { return Deck::Ranks[cards[pos].rank]; }
-    void Input();
-    void Output();
-    void addRandCard();
+//    const std::string& getSuit(int pos) const;
+//    const std::string& getRank(int pos) const;
+//    std::istream& Input(std::istream& in, int num);
+//    std::ostream& Output(std::ostream& out) const;
+//    void addRandCard();
     void Sort();
     void getAllBySuit(std::string suit);
+
+    friend std::ostream& operator<<(std::ostream& out, const Deck& deck);
+    friend std::istream& operator>>(std::istream& in, Deck& deck);
+    const std::string operator[](int pos) const;
+    Deck& operator++();
 };
